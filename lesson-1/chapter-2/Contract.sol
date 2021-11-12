@@ -16,9 +16,15 @@ pragma solidity ^0.4.25;
           Zombie[] public zombies;
           // _name variable is a reference type
           // _dna variable is a value type
-          function createZombie (string memory _name, uint _dna) public {
+          function _createZombie (string memory _name, uint _dna) private {
             // Here we create a new Zombie and push it to out zombie array
             zombies.push(Zombie(_name, _dna));  
+          }
+
+          // This is a view function because it doesn't actually change state in Solidity, just views
+          // It will generate a random DNA numbeer from a string
+          function _generateRandomDna(string memory _str) private view returns (uint) {
+
           }
 
       }
