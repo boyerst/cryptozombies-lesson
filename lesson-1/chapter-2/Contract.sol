@@ -37,5 +37,12 @@ pragma solidity ^0.4.25;
             return rand % dnaModulus;
 
           }
+          // Public function that takes an input, the zombie's name, used the name to create a zombie with random DNA
+          function createRandomZombie (string memory _name) public {
+            // Run _generateRandomDna on _name and store it in uint called randDna
+            uint randDna = _generateRandomDna(_name);
+            // Run _createZombie function and pass it _name and randDna
+            _createZombie(_name, randDna);
+          }
 
       }
