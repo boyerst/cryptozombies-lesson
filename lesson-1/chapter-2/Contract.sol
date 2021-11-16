@@ -1,7 +1,17 @@
 
 pragma solidity ^0.4.25;
 
+
+
+      
+
       contract ZombieFactory {
+
+          // We want an event to let our front-end know every time a new zombie was created, so the app can display it.
+          // ❓We don't use underscore because they are global variables?
+          event NewZombie(uint zombieId, string name, uint dna);
+
+
           // This variable will be permanently stored in the blockchain
           // This is a State variable
           uint dnaDigits = 16;
@@ -18,12 +28,22 @@ pragma solidity ^0.4.25;
           Zombie[] public zombies;
           // _name variable is a reference type
           // _dna variable is a value type
+          // Here we create a new Zombie using _name and _dna
           function _createZombie (string memory _name, uint _dna) private {
-            // Here we create a new Zombie and push it to out zombie array
-            zombies.push(Zombie(_name, _dna));  
+            // ...and push it to out zombie array
+            // ↓ old .push before we modified it to produce the zombies index (uint id)
+            // zombies.push(Zombie(_name, _dna));  
+            // ↓ new .push that will give us the zombie id that we can emit to the event
+              // ❓So we still push the zombie to the array AND get the id via isolating the index number of the new zombie?
+              
+            uint id = zombies.push(Zombie(_name, _dna)) - 1;
+            // Modification here to instruct the function to fire NewZombie event after adding a new zombie to the array 
+              // We need to tell our front end that a zombie was added on the blockchain, it will be listening
+            emit NewZombie (id, _name, _dna);
           }
 
-          // This is a view function because it doesn't actually change state in Solidity, just views
+          // MAKE DNA
+          // This is a view function because it doesn't actually change state in Solidity, just views it
           // It will generate a random DNA numbeer from a string
           function _generateRandomDna(string memory _str) private view returns (uint) {
             // First we pack our parameter '_str' to make it of type 'bytes' ---  abi.encodePacked(_str)
@@ -37,6 +57,8 @@ pragma solidity ^0.4.25;
             return rand % dnaModulus;
 
           }
+
+          // MAKE A ZOMBIE WITH THE DNA
           // Public function that takes an input, the zombie's name, used the name to create a zombie with random DNA
           function createRandomZombie (string memory _name) public {
             // Run _generateRandomDna on _name and store it in uint called randDna
