@@ -79,6 +79,8 @@ pragma solidity ^0.4.25;
           // Public function that takes an input, the zombie's name, used the name to create a zombie with random DNA
               // the parameter _name is data that is stored in memory
           function createRandomZombie (string memory _name) public {
+            // We use require here to ensure that users cannot create unlimited amount of zombies
+            require(ownerZombieCount[msg.sender]) == 0;
             // Run _generateRandomDna on _name and store it in uint called randDna
             uint randDna = _generateRandomDna(_name);
             // Run _createZombie function and pass it _name and randDna
