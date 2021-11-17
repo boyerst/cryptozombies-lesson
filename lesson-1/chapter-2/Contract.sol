@@ -39,7 +39,7 @@ pragma solidity ^0.4.25;
           // _name variable is a reference type
           // _dna variable is a value type
           // Here we create a new Zombie using _name and _dna
-          function _createZombie (string memory _name, uint _dna) private {
+          function _createZombie(string memory _name, uint _dna) private {
             // ...and push it to out zombie array
             // ↓ old .push before we modified it to produce the zombies index (uint id)
             // zombies.push(Zombie(_name, _dna));  
