@@ -2,7 +2,7 @@
 pragma solidity ^0.4.25;
 
 
-
+      // LESSON 1: Here we create a function that takes a name, uses it to generate a random zombie, and adds that zombie to our app's zombie database on the blockchain.
       
 
       contract ZombieFactory {
@@ -35,7 +35,7 @@ pragma solidity ^0.4.25;
             // zombies.push(Zombie(_name, _dna));  
             // ↓ new .push that will give us the zombie id that we can emit to the event
               // ❓So we still push the zombie to the array AND get the id via isolating the index number of the new zombie?
-              
+
             uint id = zombies.push(Zombie(_name, _dna)) - 1;
             // Modification here to instruct the function to fire NewZombie event after adding a new zombie to the array 
               // We need to tell our front end that a zombie was added on the blockchain, it will be listening
@@ -60,6 +60,7 @@ pragma solidity ^0.4.25;
 
           // MAKE A ZOMBIE WITH THE DNA
           // Public function that takes an input, the zombie's name, used the name to create a zombie with random DNA
+              // the parameter _name is data that is stored in memory
           function createRandomZombie (string memory _name) public {
             // Run _generateRandomDna on _name and store it in uint called randDna
             uint randDna = _generateRandomDna(_name);
@@ -68,3 +69,12 @@ pragma solidity ^0.4.25;
           }
 
       }
+
+
+
+
+
+
+
+
+

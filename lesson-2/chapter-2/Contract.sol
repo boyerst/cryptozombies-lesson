@@ -1,5 +1,9 @@
 pragma solidity ^0.4.25;
 
+
+// LESSON 2: Here we're going to make our app more game-like: We're going to make it multi-player, and we'll also be adding a more fun way to create zombies instead of just generating them randomly.
+
+
 contract ZombieFactory {
 
     event NewZombie(uint zombieId, string name, uint dna);
