@@ -26,6 +26,16 @@ pragma solidity ^0.4.25;
           }
 
           Zombie[] public zombies;
+
+          // We use mappings to store zombie ownership
+          // This one keeps track of the address that owns a zombie
+            // Key = uint, Value = address
+          mapping (uint => address) public zombieToOwner;
+          // This mapping keeps track of how many zombies an owner has
+            // Key = address, Value = uint
+          mapping (address => uint) ownerZombieCount;
+
+
           // _name variable is a reference type
           // _dna variable is a value type
           // Here we create a new Zombie using _name and _dna
@@ -38,6 +48,13 @@ pragma solidity ^0.4.25;
 
             uint id = zombies.push(Zombie(_name, _dna)) - 1;
             // Modification here to instruct the function to fire NewZombie event after adding a new zombie to the array 
+
+            // We use msg.sender to update _createZombie regarding zombie ownership (via mappings)
+            // Since we received the new zombie's id above, we will update our zombieToOwner mapping to store msg.sender under that id (ie store the senders address under the zombie id address)
+            zombieToOwner[id] = msg.sender;
+            // Second, we have to increase ownerToZombieCount for this msg.sender (ie we add another count of a zombie under this owners address)
+            ownerZombieCount[msg.sender]++;
+
               // We need to tell our front end that a zombie was added on the blockchain, it will be listening
             emit NewZombie (id, _name, _dna);
           }
