@@ -1,6 +1,7 @@
 pragma solidity ^0.4.25;
 import "./zombiefactory.sol";
 
+// ZombieFeeding inherits ZombieFactory
 
 contract ZombieFeeding is ZombieFactory {
 
@@ -12,10 +13,10 @@ contract ZombieFeeding is ZombieFactory {
       // We verify that msg.sender is equal to the zombie's owner
       // We do this by matching the address that owns the zombie which we find via _zombieId index in zombieToOwner mapping
     require(msg.sender == zombieToOwner[_zombieId]);
-    // We need to get the zombie's DNA
+    // We need to get our zombie's DNA
     // First we create a local zombie (myZombie), whose data is stored permanentely in 'storage'
     // We set the variable myZombie to be equal to the index of _zombieId in our zombies array
-      // ❓Where is zombies array?
+      // ↑ Where is the zombies array you say? Remember ZombieFeeding inherits ZombieFactory, which is where 'Zombie[] public zombies' is
     Zombie storage myZombie = zombies[_zombieId];
     // Ensure _targetDna isn't longer than 16 digits
     _targetDna == _targetDna % dnaModulus;
@@ -24,6 +25,7 @@ contract ZombieFeeding is ZombieFactory {
     uint newDna = (myZombie.dna + _targetDna) / 2;
     // We call createZombie, and calling the required parameters... 
       // " (string memory _name, uint _dna) "
+      // We ran into an issue here....we tried calling the _createZombie function from within ZombieFeeding, but _createZombie is a private function inside ZombieFactory. This means none of the contracts that inherit from ZombieFactory can access it
     _createZombie("NoName", newDna);
     // 
 

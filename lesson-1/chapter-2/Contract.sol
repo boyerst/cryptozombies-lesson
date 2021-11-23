@@ -25,6 +25,12 @@ pragma solidity ^0.4.25;
               uint dna;
           }
 
+          // We need a collection of Zombies, so we use an array
+          // We need a public and dynamic array of Zombie structs
+            // State variables are stored permamently on the blockchain, so creating a dynamic array of structs is useful for storing structured data in your contract (like a database)
+            // Solidity will automatically create a getter method fo arrays declared as public
+              // Other contracts are able to read from, but not write to these
+              // So this is a useful pattern for storing public data in your contracts
           Zombie[] public zombies;
 
           // We use mappings to store zombie ownership
@@ -39,7 +45,7 @@ pragma solidity ^0.4.25;
           // _name variable is a reference type
           // _dna variable is a value type
           // Here we create a new Zombie using _name and _dna
-          function _createZombie(string memory _name, uint _dna) private {
+          function _createZombie(string memory _name, uint _dna) internal {
             // ...and push it to out zombie array
             // ↓ old .push before we modified it to produce the zombies index (uint id)
             // zombies.push(Zombie(_name, _dna));  
