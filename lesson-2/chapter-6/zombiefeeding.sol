@@ -25,6 +25,13 @@ contract KittyInterface {
 
 contract ZombieFeeding is ZombieFactory {
 
+  // This is the address of the CryptoKitty contract
+  address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+  // Here we create a KittyInterface named kittyContract and initialize it with ckAddress
+    // kittyContract (variable) is now pointing to the KittyInterface contract (which is then pointing to CryptoKitty contract?)
+    // This line is saying "ckAddress is an address of a contract (CryptoKitty contract) implementing the KittyInterface interface. I would like to reference that contract using the variable kittyContract."
+  KittyInterface kittyContract = KittyInterface(ckAddress);
+
 
   function feedAndMultiply(uint _zombieId, uint _targetDna) public {
     // We 'require' in order to verify that msg.sender is equal to this zombie's owner
