@@ -54,7 +54,19 @@ contract ZombieFeeding is ZombieFactory {
       // " (string memory _name, uint _dna) "
       // We ran into an issue here....we tried calling the _createZombie function from within ZombieFeeding, but _createZombie is a private function inside ZombieFactory. This means none of the contracts that inherit from ZombieFactory can access it
     _createZombie("NoName", newDna);
-    // 
+  }
+
+  // This function will make it so that zombies made from kitties have some unique cat like features
+  // Here we make a function that takes two parameters
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+    // We declare a uint named kittyDna
+    uint kittyDna;
+    // Then we call (via the interface) the kittyContract.getKitty function with _kittyId and store genes in the kittyDna we just declared above
+    // We only care about the last value (genes), so we leave all other return fields blank but still insert commas
+    (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);
+    // Then we call feedAndMultiply and pass it both _zombieId and kittyDna
+    feedAndMultiply(_zombieId, kittyDna);
+  
 
   }
 
