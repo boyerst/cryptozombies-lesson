@@ -3,6 +3,26 @@ import "./zombiefactory.sol";
 
 // ZombieFeeding inherits ZombieFactory
 
+
+// We can grab data from any openly stored data on the blockchain
+// Here we create an interface for the the function getKitty() from CryptoKitty smart contract
+  // Now we can grab data from said function, in this case we want 'genes'
+contract KittyInterface {
+  function getKitty(uint256 _id) external view returns (
+    bool isGestating,
+    bool isReady,
+    uint256 cooldownIndex,
+    uint256 nextActionAt,
+    uint256 siringWithId,
+    uint256 birthTime,
+    uint256 matronId,
+    uint256 sireId,
+    uint256 generation,
+    uint256 genes
+  );
+}
+
+
 contract ZombieFeeding is ZombieFactory {
 
 
@@ -31,20 +51,7 @@ contract ZombieFeeding is ZombieFactory {
 
   }
 
-  contract KittyInterface {
-    function getKitty(uint256 _id) external view returns (
-      bool isGestating,
-      bool isReady,
-      uint256 cooldownIndex,
-      uint256 nextActionAt,
-      uint256 siringWithId,
-      uint256 birthTime,
-      uint256 matronId,
-      uint256 sireId,
-      uint256 generation,
-      uint256 genes
-    );
-  }
+
 
 
 }
