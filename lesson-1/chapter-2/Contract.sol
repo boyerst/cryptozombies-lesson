@@ -1,11 +1,11 @@
 
 pragma solidity ^0.4.25;
+import "./ownable.sol";
 
-
-      // LESSON 1: Here we create a function that takes a name, uses it to generate a random zombie, and adds that zombie to our app's zombie database on the blockchain.
+      // LESSON 1️⃣: Here we create a function that takes a name, uses it to generate a random zombie, and adds that zombie to our app's zombie database on the blockchain.
       
 
-      contract ZombieFactory {
+      contract ZombieFactory is Ownable {
 
           // We want an event to let our front-end know every time a new zombie was created, so the app can display it.
           // ❓We don't use underscore because they are global variables?

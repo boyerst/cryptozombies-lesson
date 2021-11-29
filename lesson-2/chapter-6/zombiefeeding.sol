@@ -1,7 +1,10 @@
 pragma solidity ^0.4.25;
 import "./zombiefactory.sol";
 
-// ZombieFeeding inherits ZombieFactory
+
+
+// LESSON 2️⃣
+// LESSON 3️⃣
 
 
 // We can grab data from any openly stored data on the blockchain
@@ -38,6 +41,8 @@ contract ZombieFeeding is ZombieFactory {
   // Instead of hard coding ckaddress we simply declare the variable
   KittyInterface kittyContract;
   // Then we create a function that will allow us to set the crypto kitties address as needed
+  // We first had this function set as external
+    // This presents a major security flaw as anyone could call it and change the ckaddress
   function setKittyContractAddress(address _address) external {
     kittyContract = KittyInterface(_address);
   }
