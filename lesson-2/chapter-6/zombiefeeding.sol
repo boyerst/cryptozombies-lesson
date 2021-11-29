@@ -25,13 +25,23 @@ contract KittyInterface {
 
 
 contract ZombieFeeding is ZombieFactory {
+  // KITTY CONTRACT ADDRESS CODE FROM LESSON 2️⃣
+  //  is the address of the CryptoKitty contract
+  //address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+    // Here we create a KittyInterface named kittyContract and initialize it with ckAddress
+      // kittyContract (variable) is now pointing to the KittyInterface contract (which is then pointing to CryptoKitty contract?)
+      // This line is saying "ckAddress is an address of a contract (CryptoKitty contract) implementing the KittyInterface interface. I would like to reference that contract using the variable kittyContract."
+  //KittyInterface kittyContract = KittyInterface(ckAddress);
 
-  // This is the address of the CryptoKitty contract
-  address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
-  // Here we create a KittyInterface named kittyContract and initialize it with ckAddress
-    // kittyContract (variable) is now pointing to the KittyInterface contract (which is then pointing to CryptoKitty contract?)
-    // This line is saying "ckAddress is an address of a contract (CryptoKitty contract) implementing the KittyInterface interface. I would like to reference that contract using the variable kittyContract."
-  KittyInterface kittyContract = KittyInterface(ckAddress);
+  // UPDATED KITTY CONTRACT ADDRESS CODE FROM LESSON 3️⃣
+  // The first version was hard coded - we changed it so that we can change the kittyContract address if need be
+  // Instead of hard coding ckaddress we simply declare the variable
+  KittyInterface kittyContract;
+  // Then we create a function that will allow us to set the crypto kitties address as needed
+  function setKittyContractAddress(address _address) external {
+    kittyContract = KittyInterface(_address);
+  }
+
 
 
   function feedAndMultiply(uint _zombieId, uint _targetDna) public {
