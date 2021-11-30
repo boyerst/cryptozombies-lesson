@@ -18,12 +18,16 @@ import "./ownable.sol";
           // We use this to ensure out DNA is only 16 characters long 
               // (Modulus operator gives the remainder after integer division)
           uint dnaModulus = 10 ** dnaDigits;
+          // Added along with level and readyTime
+          uint cooldownTime = 1 days;
 
           // This Struct defines our type and the types variables
           struct Zombie {
               string name;
               uint dna;
+              // Level = levels in game gained via winning
               uint32 level;
+              // readyTime = "cooldown period" - an amount of time a zombie has to wait after feeding before it can be active again
               uint32 readyTime;
           }
 
@@ -53,8 +57,13 @@ import "./ownable.sol";
             // zombies.push(Zombie(_name, _dna));  
             // ↓ new .push that will give us the zombie id that we can emit to the event
               // ❓So we still push the zombie to the array AND get the id via isolating the index number of the new zombie?
-
-            uint id = zombies.push(Zombie(_name, _dna)) - 1;
+            // Since we added a level and readyTime to our Zombie struct we had to update this function to use the correct # of arguments
+              // We added 1 (for level) and uint32(now + cooldownTime) (for readyTime)
+                // So when the zombie is created it will be on level 1 with a ❓cooldownTime ending 1 day from its creation❓
+                // The uint32(...) is necessary because now returns a uint256 by default. So we need to explicitly convert it to a uint32
+                // now + cooldownTime will equal the current unix timestamp (in seconds) plus the number of seconds in 1 day — which will equal the unix timestamp 1 day from now
+                // Later we can compare to see if this zombie's readyTime is greater than now to see if enough time has passed to use the zombie again
+            uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime))) - 1;
             // Modification here to instruct the function to fire NewZombie event after adding a new zombie to the array 
 
             // We use msg.sender to update _createZombie regarding zombie ownership (via mappings)
