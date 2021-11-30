@@ -44,6 +44,8 @@ contract ZombieFeeding is ZombieFactory {
   // We first had this function set as only external
     // This presents a major security flaw as anyone could call it and change the ckaddress
     // Thus why we add the onlyOwner modifier to the function
+    // This is call the modifier onlyOwner that is inherited via this path...
+          // Ownable.sol -> ZombieFactory -> ZombieFeeding
   function setKittyContractAddress(address _address) external onlyOwner {
     kittyContract = KittyInterface(_address);
   }

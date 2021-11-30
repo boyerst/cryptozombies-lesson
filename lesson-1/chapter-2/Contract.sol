@@ -23,6 +23,8 @@ import "./ownable.sol";
           struct Zombie {
               string name;
               uint dna;
+              uint32 level;
+              uint32 readyTime;
           }
 
           // We need a collection of Zombies, so we use an array
