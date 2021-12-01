@@ -73,8 +73,11 @@ contract ZombieFeeding is ZombieFactory {
 
 
 
-
-  function feedAndMultiply(uint _zombieId, uint _targetDna) public {
+  // This function is called when we have eaten a target
+    // It takes either human human Dna (_targetDna) or other species (_species)
+    // It was initially a public function - which allowed a user to call the function directly and pass in any _targetDna or _species they wanted
+      // Remember, internal is the same as private, except it is also accessible to contracts that inherit from said internal contract
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal {
     // We 'require' in order to verify that msg.sender is equal to this zombie's owner
       // Bc we don't want to let someone else feed our zombie
       // So we match the index of _zombieId in the zombieToOwner mapping to msg.sender
@@ -82,10 +85,12 @@ contract ZombieFeeding is ZombieFactory {
       // We do this by matching the address that owns the zombie which we find via _zombieId index in zombieToOwner mapping
     require(msg.sender == zombieToOwner[_zombieId]);
     // We need to get our zombie's DNA
-    // First we create a local zombie (myZombie), whose data is stored permanentely in 'storage'
-    // We set the variable myZombie to be equal to the index of _zombieId in our zombies array
+    // First we create a local zombie (myZombie), whose data is stored permanentely in Zombie storage
+    // We lookup the index of _zombieId in our zombies array and set the variable myZombie to be equal to said index
       // ↑ Where is the zombies array you say? Remember ZombieFeeding inherits ZombieFactory, which is where 'Zombie[] public zombies' is
     Zombie storage myZombie = zombies[_zombieId];
+    // After we lookup myZombie we check if our zombies cooldown timer has expired
+    require(_isReady(myZombie));
     // Ensure _targetDna isn't longer than 16 digits
     _targetDna == _targetDna % dnaModulus;
     // NewDna is the average between the feeding zombie's DNA and the target's DNA
@@ -103,6 +108,8 @@ contract ZombieFeeding is ZombieFactory {
       // " (string memory _name, uint _dna) "
       // We ran into an issue here....we tried calling the _createZombie function from within ZombieFeeding, but _createZombie is a private function inside ZombieFactory. This means none of the contracts that inherit from ZombieFactory can access it
     _createZombie("NoName", newDna);
+    // Here we call _triggerCooldown so that feeding triggers the timer
+    _triggerCooldown(myZombie);
   }
 
 
