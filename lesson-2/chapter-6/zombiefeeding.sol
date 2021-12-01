@@ -52,6 +52,28 @@ contract ZombieFeeding is ZombieFactory {
 
 
 
+  // The following definitions are added to set the zombie's readyTime by modifying feedAndMultiply such that: 
+    // Feeding triggers a zombie's cooldown, and
+    // Zombies can't feed on kitties until their cooldown period has passed
+  // We pass a storage pointer (a Zombie storage pointer) that points to our Zombie struct as an argument to our function - this way we don't have to pass our zombieId and have to look stuff up
+    // You can only pass storage pointers to private or internal functions
+    // Again, the uint32(...) is necessary because now returns a uint256 by default. So we need to explicitly convert it to a uint32
+
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+  // Function also takes a Zombie storage argument named _zombie and is an internal view function, and return a bool
+    // Function body evaluates true or false
+      // Tells us if enough time has passed since the last time the zombies fed
+      // if _zombie.readyTime <= now is True then the zombie can eat some cats
+  function _isReady(Zombie storage _zombie) internal view returns (bool) {
+    return (_zombie.readyTime <= now);
+  }
+
+
+
+
+
   function feedAndMultiply(uint _zombieId, uint _targetDna) public {
     // We 'require' in order to verify that msg.sender is equal to this zombie's owner
       // Bc we don't want to let someone else feed our zombie
