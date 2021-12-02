@@ -6,13 +6,35 @@ import "./zombiefeeding.sol";
 contract ZombieHelper is ZombieFeeding {
 
   // This modifier uses the zombie level property to restrict access to special abilities
-    // Takes 2 args
+    // Takes 2 args that are passed to it from the calling function
   modifier aboveLevel(uint _level, uint _zombieId) {
-    // Body ensures 
+    // Body ensures that the users' zombies' level property is greater than or equal to the level that was passed to it from the arguments that are passed in the modifiers in the functions themselves
+       // ex: function changeName modifier passes level 2 which will in turn be passed to the main modifier when the function calls the modifier
       // (<zombiesarray[myZombiesID].itsLevelProperty >= theLevel that is passed to the modifier)
     require(zombies[_zombieId].level >= _level);
     // This line ensures rest of the function that called the modifier is executed
     _;
   }
+  // Our game will have a few incentives for people to level up their zombies:
+    // (1st INCENTIVE) For zombies level 2 and higher, users will be able to change their name
+    // This function has an aboveLevel modifier to which we pass the level 2
+      // Meaning that in order for the user to exceute this function and this modifier, their zombie's level property must be greater than or equal to 2 
+  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) {
+    // We verify that msg.sender address is equal to the address that the zombieId is stored at
+      // ie does the user own the zombie they are editing
+      // We utilize the zombieToOwner mapping to retreive the address of the zombieId
+    require(msg.sender == zombieToOwner[_zombieId]);
+    // The name property of the zombie at passed _zombieId in the zombies array = _newName
+    zombies[_zombieId].name = _newName;
 
+
+  }
+  // (2nd INCENTIVE) For zombies level 20 and higher, users will be able to give them custom DNA
+    // This function has an above level modifier to which we pass the level 20
+      // Meaning that in order for the user to execute this function and this modifier, their zombie's level property must be greater than or equal to 20
+  function changeDna(uint _zombieId, uint _newDna, 20) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    // The name property of the zombie at passed _zombieId in the zombies array = _newName
+    zombies[_zombieId].dna = _newDna;
+  }
 }

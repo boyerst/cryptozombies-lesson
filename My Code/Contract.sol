@@ -41,9 +41,11 @@ contract ZombieFactory is Ownable {
 
     // We use mappings to store zombie ownership
     // This one keeps track of the address that owns a zombie
+    // mapping (at a uint => stores an address) public <that stores the zombieId>
       // Key = uint, Value = address
     mapping (uint => address) public zombieToOwner;
     // This mapping keeps track of how many zombies an owner has
+    // mapping (at an address => stores a uint) public <that denotes # zombies owner has>
       // Key = address, Value = uint
     mapping (address => uint) ownerZombieCount;
 
