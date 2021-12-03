@@ -43,8 +43,15 @@ contract ZombieHelper is ZombieFeeding {
 
   // This is a function that we can call from web3.js to display a user profile with all their zombies
     // Since it is a view function and it is called internally from another view function it does not cost gas - no transactions are executed, simply the reading of data from the blockchain
-      // it returns an array of uints (zombieIds) and uses memory as data location (since it is a variable declared inside of a function)
+      // it returns an array of uints (zombieIds) and uses memory as data location 
+        // ↑ Uses memory because (1) it is a reference type (Array Type), and (2) it is a variable declared inside of a function
+    // With this function we want to return a uint[] array with all users' zombies
   function getZombiesByOwner(address _owner) external view returns (uint[] memory) {
-
+    // We declare a uint[] memory variable called result
+      // We set it equal to a NEW uint array that will be have a length equal to the # of zombies the owner has
+      // We can access this # with our ownerZombieCount mapping
+      // We use the keyword NEW to initialize arrays in memory data storage
+    uint[] memory result = new uint[](ownerZombieCount[_owner]);  
+    return result;
   }
 }
