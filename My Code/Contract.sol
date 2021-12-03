@@ -8,7 +8,7 @@ import "./ownable.sol";
 contract ZombieFactory is Ownable {
 
     // We want an event to let our front-end know every time a new zombie was created, so the app can display it.
-    // ❓We don't use underscore because they are global variables?
+    // We don't use underscore because they are global variables❓
     event NewZombie(uint zombieId, string name, uint dna);
 
 
@@ -60,9 +60,9 @@ contract ZombieFactory is Ownable {
       // zombies.push(Zombie(_name, _dna));  
 
       // ↓ NEW .push that will give us the zombie id that we can emit to the event
-        // ❓So we still push the zombie to the array AND get the id via isolating the index number of the new zombie?
+        // So we still push the zombie to the array AND get the id via isolating the index number of the new zombie❓
       // Since we added a level and readyTime to our Zombie struct we had to update this function to use the correct # of arguments
-          // ❓Why don't we add these args to _createZombie?
+          // Why don't we add these args to _createZombie❓
         // We added 1 (for level) and uint32(now + cooldownTime) (for readyTime)
           // So when the zombie is created it will be on level 1 with a ❓cooldownTime ending 1 day from its creation❓
           // The uint32(...) is necessary because now returns a uint256 by default. So we need to explicitly convert it to a uint32
@@ -86,11 +86,11 @@ contract ZombieFactory is Ownable {
       // First we pack our parameter '_str' to make it of type 'bytes' ---  abi.encodePacked(_str)
       // Then we call keccak256
       // This produces a pseudorandom hexadecimal that we typecast as a uint
-          // ❓We have to typecast this result in order to store it a uint?????
+          // We have to typecast this result in order to store it a uint❓
       // We store the above hexadecimal (typecasted as a uint) in a uint called rand
       uint rand = uint(keccak256(abi.encodePacked(_str)));    
       //We want our DNA to be 16 digits long, so we have to use the modulus operator % to shorten the integer to said 16 digits
-          // ❓From 256 bit to 16????
+          // From 256 bit to 16❓
       return rand % dnaModulus;
 
     }

@@ -100,7 +100,7 @@ contract ZombieFeeding is ZombieFactory {
     // We want to replace the last two digits of newDna with 99 as this denotes cat Dna
     // We modulus 100 of the new Dna to get return a whole number remainder
       // Then we add 99 to change the last two digits to the desired numbers
-      // ❓Where are _species and "kitty" declared? In CryptoKitty contract?
+      // Where are _species and "kitty" declared? In CryptoKitty contract❓
     if (keccak256(abi.encodePacked(_species)) == keccak256(abi.encodePacked("kitty"))) {
       newDna = newDna - newDna % 100 + 99;
     }    

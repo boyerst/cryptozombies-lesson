@@ -3,6 +3,9 @@ pragma solidity ^0.4.25;
 import "./zombiefeeding.sol";
 
 // ZombieHelper inherits ZombieFeeding, which inherits ZombieFactory, which inherits Ownable
+// This file is solely for additional helper methods
+  // So as to keep main logic clean ❓
+
 contract ZombieHelper is ZombieFeeding {
 
   // This modifier uses the zombie level property to restrict access to special abilities
@@ -36,5 +39,12 @@ contract ZombieHelper is ZombieFeeding {
     require(msg.sender == zombieToOwner[_zombieId]);
     // The name property of the zombie at passed _zombieId in the zombies array = _newName
     zombies[_zombieId].dna = _newDna;
+  }
+
+  // This is a function that we can call from web3.js to display a user profile with all their zombies
+    // Since it is a view function and it is called internally from another view function it does not cost gas - no transactions are executed, simply the reading of data from the blockchain
+      // it returns an array of uints (zombieIds) and uses memory as data location (since it is a variable declared inside of a function)
+  function getZombiesByOwner(address _owner) external view returns (uint[] memory) {
+
   }
 }
