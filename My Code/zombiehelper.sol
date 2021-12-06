@@ -8,6 +8,13 @@ import "./zombiefeeding.sol";
 
 contract ZombieHelper is ZombieFeeding {
 
+  // Define a uint that will be used in levelUp function
+    // ether is a built in unit 
+    // ENSURE to place the 0 before the decimal!
+  uint levelUpFee = 0.001 ether;
+
+
+
   // This modifier uses the zombie level property to restrict access to special abilities
     // Takes 2 args that are passed to it from the calling function
   modifier aboveLevel(uint _level, uint _zombieId) {
@@ -18,6 +25,19 @@ contract ZombieHelper is ZombieFeeding {
     // This line ensures rest of the function that called the modifier is executed
     _;
   }
+
+  // Takes one parameter, the ID of the zombie that the user wants to level up
+    // It is external, so it can be only be called from outside of the contract
+    // It is payable, so it can receive Ether in conjunction with a call
+  function levelUp(uint _zombieId) external payable {
+    // Require that the amount of ether in the transaction payload is equal to the levelUpFee
+    require(msg.value == levelUpFee);
+    // If the above requirement is met, level the users zombie up by 1 level
+      // "Add one level to the level property of the zombie in the zombies array currently stored at the index .... <zombieId>"
+    zombies[_zombieId].level++;
+  }
+
+
   // Our game will have a few incentives for people to level up their zombies:
     // (1st INCENTIVE) For zombies level 2 and higher, users will be able to change their name
     // This function has an aboveLevel modifier to which we pass the level 2
@@ -45,10 +65,11 @@ contract ZombieHelper is ZombieFeeding {
     // Since it is a view function and it is called internally from another view function it does not cost gas - no transactions are executed, simply the reading of data from the blockchain
       // it returns an array of uints (zombieIds) and uses memory as data location 
         // ↑ Uses memory because (1) it is a reference type (Array Type), and (2) it is a variable declared inside of a function
-    // With this function we want to return a uint[] array with all users' zombies
+    // With this function we want to return a uint[] array with all users' zombieIds
   function getZombiesByOwner(address _owner) external view returns (uint[] memory) {
     // We declare a uint[] memory variable called result
-      // We set it equal to a NEW uint array that will be have a length equal to the # of zombies the owner has
+      // We set it equal to a NEW (newly initialized) uint array that will have a length equal to the # of zombies the owner has
+          // array[](length of array)
       // We can access this # with our ownerZombieCount mapping
       // We use the keyword NEW to initialize arrays in memory data storage
     uint[] memory result = new uint[](ownerZombieCount[_owner]);  
@@ -57,15 +78,22 @@ contract ZombieHelper is ZombieFeeding {
       // This will tell the code in the for loop that the index # starts at 0
     uint counter = 0;
     // 1. INIIALIZE: the variable to start at 0
-    // 2. TEST CONDITION: if the variable i is less than the length of the mapping that holds all of the zombies in the Dapp (zombieToOwner[]), then...continue to the code inside the for loop
+    // 2. TEST CONDITION: if the variable i is less than the length of the Dapps' zombies array, then...continue to the code inside the for loop
       // If FALSE, we done here, the loop ends
-    // 3. ITERATION STATEMENT: After the x value of the variable i has been found to pass the test condition and then the code in the body of the for loop, increase the value of the variable i by 1 and go through the loop again
+    // 3. ITERATION STATEMENT: After the x value of the variable i has been found to pass the test condition, followed by the code in the body of the for loop, increase the value of the variable i by 1 and go through the loop again
     for (uint i = 0; i < zombies.length; i++) {
-      // IF the address at the index i in the zombieToOwner mapping is equal to the address of _owner...
-      
+      // Where i = zombieIds
+      // Inside the for loop, we make an if statement that checks if the address that owns the zombieId is equal to the address of the _owner
+        // Remember, zombieToOwner is a mapping that keeps track of the address that owns a zombieId
+            // mapping (at a uint => stores an address) public <that stores the zombieId>
+          // So we will be checking the address that each zombieId is attached to, and matching it the the _owner address
+          // Every zombie in the zombies array will be checked
+    
       if (zombieToOwner[i] == _owner) {
-        // ...assign that address in the result array to the index represented by the current value of counter 
+        // ...if they match, add the zombies' ID to index in the array represented by the current value of i
         result[counter] = i;
+        // Increase the value of the counter so that next time the counter variable is referenced, it will represent the next index # in the result array
+          // Thus, we will attach the zombieId of the next 'match' to that index
         counter++;
       }
     }
