@@ -52,6 +52,54 @@ contract ZombieHelper is ZombieFeeding {
       // We can access this # with our ownerZombieCount mapping
       // We use the keyword NEW to initialize arrays in memory data storage
     uint[] memory result = new uint[](ownerZombieCount[_owner]);  
+    // Here we declare a uint called counter and set it to 0
+      // This is used to keep track of the index # inside of our result[] array
+      // This will tell the code in the for loop that the index # starts at 0
+    uint counter = 0;
+    // 1. INIIALIZE: the variable to start at 0
+    // 2. TEST CONDITION: if the variable i is less than the length of the mapping that holds all of the zombies in the Dapp (zombieToOwner[]), then...continue to the code inside the for loop
+      // If FALSE, we done here, the loop ends
+    // 3. ITERATION STATEMENT: After the x value of the variable i has been found to pass the test condition and then the code in the body of the for loop, increase the value of the variable i by 1 and go through the loop again
+    for (uint i = 0; i < zombies.length; i++) {
+      // IF the address at the index i in the zombieToOwner mapping is equal to the address of _owner...
+      
+      if (zombieToOwner[i] == _owner) {
+        // ...assign that address in the result array to the index represented by the current value of counter 
+        result[counter] = i;
+        counter++;
+      }
+    }
     return result;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
