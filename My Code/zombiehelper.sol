@@ -26,6 +26,23 @@ contract ZombieHelper is ZombieFeeding {
     _;
   }
 
+  // onlyOwner makes it so that only the owner of this contract can withdraw ethereum
+    // external so can only be called outside of this contract
+  function withdraw() external onlyOwner {
+    // payable makes the address able to accept ethereum as only address payable provides the transfer function
+      // Explicit conversions to and from address to address payable are allowed but must be set EXPLICITLY
+      // The _owner variable is of type uint160 so we must explicitly cast it to address payable
+    address payable _owner = address(uint160(owner()));
+    // When this function is called, use the transfer function to transfer the total balance stored on the contract to the owners address
+      //_ownersContract.transferFunction(ethereumBalance(ofThisAddress).ofThisContract)
+    _owner.transfer(address(this).balance);
+  }
+  
+  // Function to change the fees of the game as price of ETH fluctuates
+  function setLevelUpFee (uint _fee) external onlyOwner {
+    levelUpFee = _fee;
+  }
+
   // Takes one parameter, the ID of the zombie that the user wants to level up
     // It is external, so it can be only be called from outside of the contract
     // It is payable, so it can receive Ether in conjunction with a call
@@ -36,6 +53,7 @@ contract ZombieHelper is ZombieFeeding {
       // "Add one level to the level property of the zombie in the zombies array currently stored at the index .... <zombieId>"
     zombies[_zombieId].level++;
   }
+
 
 
   // Our game will have a few incentives for people to level up their zombies:
@@ -49,9 +67,9 @@ contract ZombieHelper is ZombieFeeding {
     require(msg.sender == zombieToOwner[_zombieId]);
     // The name property of the zombie at passed _zombieId in the zombies array = _newName
     zombies[_zombieId].name = _newName;
-
-
   }
+
+
   // (2nd INCENTIVE) For zombies level 20 and higher, users will be able to give them custom DNA
     // This function has an above level modifier to which we pass the level 20
       // Meaning that in order for the user to execute this function and this modifier, their zombie's level property must be greater than or equal to 20
