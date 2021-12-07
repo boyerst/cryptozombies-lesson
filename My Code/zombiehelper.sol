@@ -26,6 +26,7 @@ contract ZombieHelper is ZombieFeeding {
     _;
   }
 
+
   // onlyOwner makes it so that only the owner of this contract can withdraw ethereum
     // external so can only be called outside of this contract
   function withdraw() external onlyOwner {
@@ -38,10 +39,14 @@ contract ZombieHelper is ZombieFeeding {
     _owner.transfer(address(this).balance);
   }
   
+
+
   // Function to change the fees of the game as price of ETH fluctuates
-  function setLevelUpFee (uint _fee) external onlyOwner {
+  function setLevelUpFee(uint _fee) external onlyOwner {
     levelUpFee = _fee;
   }
+
+
 
   // Takes one parameter, the ID of the zombie that the user wants to level up
     // It is external, so it can be only be called from outside of the contract
@@ -78,6 +83,7 @@ contract ZombieHelper is ZombieFeeding {
     // The name property of the zombie at passed _zombieId in the zombies array = _newName
     zombies[_zombieId].dna = _newDna;
   }
+
 
   // This is a function that we can call from web3.js to display a user profile with all their zombies
     // Since it is a view function and it is called internally from another view function it does not cost gas - no transactions are executed, simply the reading of data from the blockchain

@@ -79,6 +79,7 @@ contract ZombieFactory is Ownable {
       emit NewZombie (id, _name, _dna);
     }
 
+
     // MAKE DNA
     // This is a view function because it doesn't actually change state in Solidity, just views it
     // It will generate a random DNA numbeer from a string
@@ -94,6 +95,7 @@ contract ZombieFactory is Ownable {
       return rand % dnaModulus;
 
     }
+
 
     // MAKE A ZOMBIE WITH THE DNA
     // Public function that takes an input, the zombie's name, used the name to create a zombie with random DNA
