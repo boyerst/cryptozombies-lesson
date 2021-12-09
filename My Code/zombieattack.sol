@@ -21,7 +21,16 @@ contract ZombieAttack is ZombieHelper {
     return uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % _modulus;
   }
 
-  function attack(uint _zombieId, uint _targetId) external {
-    
+  // Includes ownerOf modifier to ensure the owner owns the zombieId they are calling the function with
+  function attack(uint _zombieId, uint _targetId) external ownerOf(_zombieId) {
+    // Declare a storage pointer to the owners zombie
+      // We declare that myZombie is a Zombie Struct in the apps' zombies array under this zombieId and it is data stored in storage
+    Zombie storage myZombie = zombies[_zombieId];
+    // Declare a storage pointer to the zombie attack target
+      // We declare that the enemyZombie is a Zombie Struct in the apps' zombies array under this zombieId and it is data stored in storage
+    Zombie storage enemyZombie = zombies[_targetId]; 
+    // We need a random number between 0-99 to determine outcome of battle
+      // We use randMod function and pass it the appropriate numbeer
+    uint rand = randMod(100);
   }
 }

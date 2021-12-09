@@ -65,11 +65,13 @@ contract ZombieHelper is ZombieFeeding {
     // (1st INCENTIVE) For zombies level 2 and higher, users will be able to change their name
     // This function has an aboveLevel modifier to which we pass the level 2
       // Meaning that in order for the user to exceute this function and this modifier, their zombie's level property must be greater than or equal to 2 
-  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) {
+  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) ownerOf(_zombieId) {
+    // REFACTOR: added ownerOf modifier & removed require statement
     // We verify that msg.sender address is equal to the address that the zombieId is stored at
       // ie does the user own the zombie they are editing
       // We utilize the zombieToOwner mapping to retreive the address of the zombieId
-    require(msg.sender == zombieToOwner[_zombieId]);
+    //require(msg.sender == zombieToOwner[_zombieId]);
+    
     // The name property of the zombie at passed _zombieId in the zombies array = _newName
     zombies[_zombieId].name = _newName;
   }
@@ -78,8 +80,10 @@ contract ZombieHelper is ZombieFeeding {
   // (2nd INCENTIVE) For zombies level 20 and higher, users will be able to give them custom DNA
     // This function has an above level modifier to which we pass the level 20
       // Meaning that in order for the user to execute this function and this modifier, their zombie's level property must be greater than or equal to 20
-  function changeDna(uint _zombieId, uint _newDna, 20) external aboveLevel(20, _zombieId) {
-    require(msg.sender == zombieToOwner[_zombieId]);
+  function changeDna(uint _zombieId, uint _newDna, 20) external aboveLevel(20, _zombieId) ownerOf(_zombieId) {
+    // REFACTOR: added ownerOf modifier & removed require statement
+    // require(msg.sender == zombieToOwner[_zombieId]);
+
     // The name property of the zombie at passed _zombieId in the zombies array = _newName
     zombies[_zombieId].dna = _newDna;
   }

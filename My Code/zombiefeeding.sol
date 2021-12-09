@@ -35,7 +35,7 @@ contract ZombieFeeding is ZombieFactory {
     _;
   }
 
-  // KITTY CONTRACT ADDRESS CODE FROM LESSON 2️⃣
+  // REFACTOR: KITTY CONTRACT ADDRESS CODE FROM LESSON 2️⃣
   //  This is the address of the CryptoKitty contract
   //address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     // Here we create a KittyInterface named kittyContract and initialize it with ckAddress
@@ -43,7 +43,7 @@ contract ZombieFeeding is ZombieFactory {
       // This line is saying "ckAddress is an address of a contract (CryptoKitty contract) implementing the KittyInterface interface. I would like to reference that contract using the variable kittyContract."
   //KittyInterface kittyContract = KittyInterface(ckAddress);
 
-  // UPDATED KITTY CONTRACT ADDRESS CODE FROM LESSON 3️⃣
+  // REFACTOR: KITTY CONTRACT ADDRESS CODE FROM LESSON 3️⃣
   // The first version was hard coded - we changed it so that we can change the kittyContract address if need be
   // Instead of hard coding ckaddress we simply declare the variable
   KittyInterface kittyContract;
@@ -84,14 +84,14 @@ contract ZombieFeeding is ZombieFactory {
     // It takes either human human Dna (_targetDna) or other species (_species)
     // It was initially a public function - which allowed a user to call the function directly and pass in any _targetDna or _species they wanted
       // Remember, internal is the same as private, except it is also accessible to contracts that inherit from said internal contract
-      // EDITS: added ownerOf modifier that we created to streamline code
+      // REFACTOR: added ownerOf modifier that we created to streamline code
   function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf(_zombieID) {
     // We 'require' in order to verify that msg.sender is equal to this zombie's owner
       // Bc we don't want to let someone else feed our zombie
       // So we match the index of _zombieId in the zombieToOwner mapping to msg.sender
       // We verify that msg.sender is equal to the zombie's owner
       // We do this by matching the address that owns the zombie which we find via _zombieId index in zombieToOwner mapping
-      // EDITS: removed this require when we added modifier to the function
+      // REFACTOR: removed this require when we added modifier to the function
     // require(msg.sender == zombieToOwner[_zombieId]);
 
     // We need to get our zombie's DNA
