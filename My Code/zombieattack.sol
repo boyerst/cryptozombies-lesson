@@ -32,5 +32,15 @@ contract ZombieAttack is ZombieHelper {
     // We need a random number between 0-99 to determine outcome of battle
       // We use randMod function and pass it the appropriate numbeer
     uint rand = randMod(100);
+    // If the random number is less than or equal to 70, do this...
+      // Then make the target a zombie
+    if (rand <= attackVictoryProbability) {
+      myZombie.winCount++;
+      myZombie.level++;
+      enemyZombie.lossCount++;
+      // How does feedAndMultiply take _enemyZombie.dna instead of _targetDna❓❓
+      feedAndMultiply(_zombieId, _enemyZombie.Dna, "zombie");
+    }
+    }
   }
 }
