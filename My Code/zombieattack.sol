@@ -39,7 +39,12 @@ contract ZombieAttack is ZombieHelper {
       myZombie.level++;
       enemyZombie.lossCount++;
       // How does feedAndMultiply take _enemyZombie.dna instead of _targetDna❓❓
-      feedAndMultiply(_zombieId, _enemyZombie.Dna, "zombie");
+        // If it is a uint and listed at the 2nd argument, it will accept it?
+      feedAndMultiply(_zombieId, _enemyZombie.dna, "zombie");
+    } else {
+        myZombie.lossCount++;
+        enemyZombie.winCount++;
+        _triggerCooldown(myZombie);
     }
     }
   }
