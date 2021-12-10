@@ -29,6 +29,12 @@ contract ZombieFactory is Ownable {
         uint32 level;
         // readyTime = "cooldown period" - an amount of time a zombie has to wait after feeding before it can be active again
         uint32 readyTime;
+        // We added these two properties to keep track of wins and losses
+          // We use uint16 because it is the smallest we can get away with
+            //A uint8 is too small, since 2^8 = 256 — if our zombies attacked once per day, they could overflow this within a year. But 2^16 is 65536 — so unless a user wins or loses every day for 179 years straight, we should be safe here
+        uint16 winCount;
+        uint lossCount;
+
     }
 
     // We need a collection of Zombies, so we use an array
@@ -56,10 +62,10 @@ contract ZombieFactory is Ownable {
     function _createZombie(string memory _name, uint _dna) internal {
       // ...and push it to out zombie array
 
-      // ↓ OLD .push before we modified it to produce the zombies index (uint id)
+      // ↓ REFACTOR: old .push before we modified it to produce the zombies index (uint id)
       // zombies.push(Zombie(_name, _dna));  
 
-      // ↓ NEW .push that will give us the zombie id that we can emit to the event
+      // ↓ REFACTOR: new .push that will give us the zombie id that we can emit to the event
         // So we still push the zombie to the array AND get the id via isolating the index number of the new zombie❓
       // Since we added a level and readyTime to our Zombie struct we had to update this function to use the correct # of arguments
           // Why don't we add these args to _createZombie❓
@@ -68,7 +74,9 @@ contract ZombieFactory is Ownable {
           // The uint32(...) is necessary because now returns a uint256 by default. So we need to explicitly convert it to a uint32
           // now + cooldownTime will equal the current unix timestamp (in seconds) plus the number of seconds in 1 day — which will equal the unix timestamp 1 day from now
           // Later we can compare to see if this zombie's readyTime is greater than now to see if enough time has passed to use the zombie again
-      uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime))) - 1;
+        // REFACTOR: added winCount, lossCount - both starting at zero
+          // We don't pass level, readyTime, winCount, lossCount to _createZombie because they are already explicity set and will be added when the zombie is pushed
+      uint id = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)) - 1;
       // We use msg.sender to update _createZombie regarding zombie ownership (via mappings)
       // Since we received the new zombie's id above, we will update our zombieToOwner mapping to store msg.sender under that id (ie store the senders address under the zombie id address)
       zombieToOwner[id] = msg.sender;
