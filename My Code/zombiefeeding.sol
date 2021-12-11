@@ -30,7 +30,10 @@ contract KittyInterface {
 contract ZombieFeeding is ZombieFactory {
 
   // Since we use this check multiple times we make a modifier to clean up the code
-  modifier ownerOf(uint _zombieId) {
+  // REFACTOR: changed mod name from ownerOf to onlyOwnerOf after adding ownerOf function to zombieownership.sol
+    // We cannot have a modifier and a function with the same name
+    // It is required that the function in that contract be named ownerOf as it needs to conform to the ERC721 token standard
+  modifier onlyOwnerOf(uint _zombieId) {
     require(msg.sender == zombieToOwner[_zombieId]);
     _;
   }
@@ -85,7 +88,8 @@ contract ZombieFeeding is ZombieFactory {
     // It was initially a public function - which allowed a user to call the function directly and pass in any _targetDna or _species they wanted
       // Remember, internal is the same as private, except it is also accessible to contracts that inherit from said internal contract
       // REFACTOR: added ownerOf modifier that we created to streamline code
-  function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal ownerOf(_zombieID) {
+        // RE-REFACTOR: changed name of ownerOf to onlyOwnerOf (see modifier code for explanation)
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) internal onlyOwnerOf(_zombieID) {
     // We 'require' in order to verify that msg.sender is equal to this zombie's owner
       // Bc we don't want to let someone else feed our zombie
       // So we match the index of _zombieId in the zombieToOwner mapping to msg.sender
