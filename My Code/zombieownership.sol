@@ -26,10 +26,18 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
   // We abstract the logic from transferFrom() into its own private function, _transfer, which is then called by transferFrom
   function _transfer(address _from, address _to, uint256 _tokenId) private {
     // We have 2 mappings that will change when ownership changes
+    // REFACTOR V1: 
+    // ownerZombieCount[_to]++;
+    // ownerZombieCount[_from]--;
+
+    // REFACTOR V2: instead of incrementing with math operations, we added SafeMath methods
     // We increment ownerZombieCount for the person receiving the zombie
-    ownerZombieCount[_to]++;
+    ownerZombieCount[_to] = ownerZombieCount[_to].add(1);
     // We decrement the ownerZombieCount for the person sending the zombie
-    ownerZombieCount[_from]--;
+    ownerZombieCount[_from] = ownerZombieCount[_from].sub(1);
+
+
+
     // We change zombieToOwner mapping for this _tokenId so it now points to _to
     zombieToOwner[_tokenId] = _to;
     // The ERC721 spec includes a Transfer event. The last line of this function should fire Transfer with the correct information
@@ -54,3 +62,19 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
     emit Approval(msg.sender, _approved, _tokenId);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
