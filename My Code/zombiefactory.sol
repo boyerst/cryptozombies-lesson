@@ -13,6 +13,9 @@ contract ZombieFactory is Ownable {
       // Which we are using to prevent overflow and underflow
       // This is a library created by OpenZeppelin that has 4 functions (+, -, *, /)
     using SafeMath for uint256;
+    // Declaring more SafeMath libraries so that we can use the methods on our non-uint256 uints
+    using SafeMath for uint32;
+    using SafeMath for uint16;
 
 
     // We want an event to let our front-end know every time a new zombie was created, so the app can display it.
@@ -89,7 +92,10 @@ contract ZombieFactory is Ownable {
       // Since we received the new zombie's id above, we will update our zombieToOwner mapping to store msg.sender under that id (ie store the senders address under the zombie id address)
       zombieToOwner[id] = msg.sender;
       // Second, we have to increase ownerToZombieCount for this msg.sender (ie we add another count of a zombie under this owners address)
-      ownerZombieCount[msg.sender]++;
+      // REFACTOR V1
+      //ownerZombieCount[msg.sender]++;
+      // REFACTOR V2: converted to SafeMath method
+      ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1)
       // Modification here to instruct the function to fire NewZombie event after adding a new zombie to the array 
         // We need to tell our front end that a zombie was added on the blockchain, it will be listening
       emit NewZombie (id, _name, _dna);
