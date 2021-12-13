@@ -1,11 +1,19 @@
 
 pragma solidity ^0.4.25;
 import "./ownable.sol";
+import "./safemath.sol";
 
-      // LESSON 1️⃣: Here we create a function that takes a name, uses it to generate a random zombie, and adds that zombie to our app's zombie database on the blockchain.
-      
+
+// LESSON 1️⃣: Here we create a function that takes a name, uses it to generate a random zombie, and adds that zombie to our app's zombie database on the blockchain.
+
 
 contract ZombieFactory is Ownable {
+
+    // We declare that we are using SafeMath 
+      // Which we are using to prevent overflow and underflow
+      // This is a library created by OpenZeppelin that has 4 functions (+, -, *, /)
+    using SafeMath for uint256;
+
 
     // We want an event to let our front-end know every time a new zombie was created, so the app can display it.
     // We don't use underscore because they are global variables❓
