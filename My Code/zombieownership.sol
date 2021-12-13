@@ -6,6 +6,12 @@ import "./erc721.sol";
 // We can inherit from multiple contacts...
 contract ZombieOwnership is ZombieAttack, ERC721 {
 
+
+  // Mapping to ensure only owner or approved address can transfer token
+    // Only stores addresses that are approved by the owner of a token
+  mapping (uint => address) zombieApprovals;
+
+
   // This function simply takes an address, and returns how many tokens that address owns
   function balanceOf(address _owner) external view returns (uint256) {
     return ownerZombieCount[_owner];
@@ -16,6 +22,7 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
     return zombieToOwner[_tokenId];
   }
 
+  // Function to transfer ownership from one person to another
   // We abstract the logic from transferFrom() into its own private function, _transfer, which is then called by transferFrom
   function _transfer(address _from, address _to, uint256 _tokenId) private {
     // We have 2 mappings that will change when ownership changes
@@ -32,7 +39,11 @@ contract ZombieOwnership is ZombieAttack, ERC721 {
 
   // The token's owner calls transferFrom with his address as the _from parameter, the address he wants to transfer to as the _to parameter, and the _tokenId of the token he wants to transfer
   function transferFrom(address _from, address _to, uint256 _tokenId) external payable {
-
+    // Require that only the owner or approved address can transfer
+        // We use the logical OR operator
+    require(zombieToOwner[_tokenId] == msg.sender || zombieApprovals[_tokenId == msg.sender]);
+    // Call _transfer function
+    _transfer(_from, _to, _tokenId);
   }
 
   function approve(address _approved, uint256 _tokenId) external payable {
