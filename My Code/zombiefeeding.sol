@@ -38,7 +38,7 @@ contract ZombieFeeding is ZombieFactory {
     _;
   }
 
-  // REFACTOR: KITTY CONTRACT ADDRESS CODE FROM LESSON 2️⃣
+  // REFACTOR V1: KITTY CONTRACT ADDRESS CODE FROM LESSON 2️⃣
   //  This is the address of the CryptoKitty contract
   //address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     // Here we create a KittyInterface named kittyContract and initialize it with ckAddress
@@ -46,7 +46,7 @@ contract ZombieFeeding is ZombieFactory {
       // This line is saying "ckAddress is an address of a contract (CryptoKitty contract) implementing the KittyInterface interface. I would like to reference that contract using the variable kittyContract."
   //KittyInterface kittyContract = KittyInterface(ckAddress);
 
-  // REFACTOR: KITTY CONTRACT ADDRESS CODE FROM LESSON 3️⃣
+  // REFACTOR V2: KITTY CONTRACT ADDRESS CODE FROM LESSON 3️⃣
   // The first version was hard coded - we changed it so that we can change the kittyContract address if need be
   // Instead of hard coding ckaddress we simply declare the variable
   KittyInterface kittyContract;

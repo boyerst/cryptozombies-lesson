@@ -10,7 +10,7 @@ contract ZombieAttack is ZombieHelper {
 
   function randMod(uint _modulus) internal returns(uint) {
     // Increments randNonce
-    randNonce++;
+    randNonce = randNonce.add(1);
     // Calculates the uint typecast of keccak256 hash of abi.encodePacked(now, msg.sender, randNonce) and returns that value % _modulus
       // 1. takes the timestamp of now, the address of the sender, and an incrementing nonce (a random number)
       // 2. It "packs" the arguments using an ABI encoding function to return bytes
@@ -36,15 +36,15 @@ contract ZombieAttack is ZombieHelper {
     // If the random number is less than or equal to 70, do this...
       // Then make the target a zombie
     if (rand <= attackVictoryProbability) {
-      myZombie.winCount++;
-      myZombie.level++;
-      enemyZombie.lossCount++;
+      myZombie.winCount = myZombie.winCount.add(1);
+      myZombie.level = myZombie.level.add(1);
+      enemyZombie.lossCount = enemyZombie.lossCount.add(1);
       // How does feedAndMultiply take _enemyZombie.dna instead of _targetDna❓❓
         // If it is a uint and listed at the 2nd argument, it will accept it?
       feedAndMultiply(_zombieId, _enemyZombie.dna, "zombie");
     } else {
-        myZombie.lossCount++;
-        enemyZombie.winCount++;
+      myZombie.lossCount = myZombie.lossCount.add(1);
+      enemyZombie.winCount = enemyZombie.winCount.add(1);
         _triggerCooldown(myZombie);
     }
     }
