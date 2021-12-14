@@ -50,3 +50,5 @@ contract ZombieAttack is ZombieHelper {
     }
   }
 }
+
+
