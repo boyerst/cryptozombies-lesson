@@ -13,7 +13,13 @@
 
       // Declare var here that will be used to store our instantiated contract
       var cryptoZombies;
-      //
+
+
+      // Var used in logic to find out the address of the user using our app
+      var userAccount;
+
+
+
       function startApp() {
         // "YOUR_CONTRACT_ADDRESS" is the address of the CryptoZombies contract on the mainnet
         var cryptoZombiesAddress = "YOUR_CONTRACT_ADDRESS";
@@ -21,6 +27,19 @@
           // cryptoZombiesABI gets imported with out script tag
           // cryptoZombies address comes from cryptoZombiesAddress in the var above
         cryptoZombies = new web3js.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
+
+        // We use a setInterval loop to check (every 100 millisecs) if userAccount is still active...
+        var accountInterval = setInterval(function() {
+          // ...if it is not still active (ie if it does not equal web3.eth.accounts[0]...
+          if (web3.eth.accounts[0] !== userAccount) {
+            // ...then reassign userAccount to the currently active account...
+            userAccount = web3.eth.accounts[0];
+            //...and call this function to update the display...
+              // Here we chain a .then statement after the function and pass the result of said function to the displayZombies() function
+            getZombiesByOwner(userAccount).then(displayZombies);
+          }
+        }, 100);
+
       }
 
 
