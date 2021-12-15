@@ -9,6 +9,11 @@
     <script language="javascript" type="text/javascript" src="cryptozombies_abi.js"></script>
   </head>
   <body>
+
+   <!-- div added so that we can implement a rough parse and display of our ZOMBs utilizing jQuery -->
+    <div id="zombies"></div>
+
+
     <script>
 
       // Declare var here that will be used to store our instantiated contract
@@ -41,6 +46,43 @@
         }, 100);
 
       }
+
+      // Function to parse and display the data we retreive from our contract on the front end utilizing jQuery
+        // Here, we pass the ids of the zombies - which are retrieved like so...
+         // displayZombies() is called from inside of the startApp() function along with the result of the call to getZombiesByOwner
+          // The result of getZombiesByOwner uses the users' active MetaMask address found in setInterval() 
+            // Call getZombiesByOwner() with address
+              // getZombiesByOwner() returns a Web3.js call to getZombiesByOwner() contract function (in ZombieHelper.sol)
+              // getZombiesByOwner() contract function (in ZombieHelper.sol) runs a For Loop over zombieToOwner Mapping, using the # of zombies the owner has which is found via the ownerZombieCount Mapping, and returns all of the ids of the zombies the user owns
+      function displayZombies(ids) {
+        // First we clear the contents of the #zombies div, if there should be contents
+          // This way if the user changes their active MetaMask account, it will clear their old zombie army before loading the new one
+          // This is how this is done in jQuery...
+        $("#zombies").empty();
+        // Then, we loop through each id, and for each one call getZombieDetails(id) to look up all the information for that zombie from our smart contract
+        for (id of ids) {
+          // Look up zombie details from our contract. Returns a `zombie` object which we pass to below...
+          getZombieDetails(id)
+          .then(function(zombie) {
+            // Using ES6's "template literals" to inject variables into the HTML
+            // Append each one to our #zombies div
+              // $("#IdOfDivWantToAppendTo").append('<div class="newDivWithDataFromForLoop'>)
+            $("#zombies").append(`<div class="zombie">
+              <ul>
+                <li>Name: ${zombie.name}</li>
+                <li>DNA: ${zombie.dna}</li>
+                <li>Level: ${zombie.level}</li>
+                <li>Wins: ${zombie.winCount}</li>
+                <li>Losses: ${zombie.lossCount}</li>
+                <li>Ready Time: ${zombie.readyTime}</li>
+              </ul>
+            </div>`);
+          });
+        }
+
+        // Then, we put the information about that zombie into an HTML template to format it for display, and append that template to the #zombies div
+      }
+
 
 
       // This function will communicate with Web3 provider node and tell it to return the zombie with index id from Zombie[] public zombies
