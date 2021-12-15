@@ -5,9 +5,24 @@
     <title>CryptoZombies front-end</title>
     <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <!-- Here we added another script tag so that we can import the ABI definition into our project -->
+    <script language="javascript" type="text/javascript" src="cryptozombies_abi.js"></script>
   </head>
   <body>
     <script>
+
+      // Declare var here that will be used to store our instantiated contract
+      var cryptoZombies;
+      //
+      function startApp() {
+        // "YOUR_CONTRACT_ADDRESS" is the address of the CryptoZombies contract on the mainnet
+        var cryptoZombiesAddress = "YOUR_CONTRACT_ADDRESS";
+        // Here we instantiate our contract
+          // cryptoZombiesABI gets imported with out script tag
+          // cryptoZombies address comes from cryptoZombiesAddress in the var above
+        cryptoZombies = new web3js.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
+      }
+
       window.addEventListener('load', function() {
         // Checking if Web3 has been injected by the browser (Mist/MetaMask)
           // Checking to see if the global JS onject web3 exists
