@@ -85,12 +85,11 @@
         // Then, we put the information about that zombie into an HTML template to format it for display, and append that template to the #zombies div
       }
 
-
+      // A successful 'send' transaction to createRandomZombie() in our Contract results in a new zombie being created and a redrawn UI to reflect the new zombie
       function createRandomZombie(name) {
-        // This is going to take a while, so update the UI to let the user know
-        // the transaction has been sent
+        // This is going to take a while, so update the UI to let the user know the transaction has been sent
         $("#txStatus").text("Creating new zombie on the blockchain. This may take a while...");
-        // Send the tx to our contract:
+        // Send the tx that calls the function in our contract:
         return cryptoZombies.methods.createRandomZombie(name)
         .send({ from: userAccount })
         // EVENT LISTENER "receipt" <- will fire when tx is included into a block on ETH
@@ -107,6 +106,19 @@
         });
       }
 
+      // A successful 'send' transaction to feeOnKittyu() in our Contract results in a new zombie being created and a redrawn UI to reflect the new kitty zombie
+      function feedOnKitty(zombieId, kittyId) {
+        $("#txStatus").text("Eating a kitty. This may take a while...");
+        return cryptoZombies.methods.feedOnKitty(zombieId, kittyId)
+        .send({ from: userAccount })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Ate a kitty and spawned a new Zombie!");
+          getZombiesByOwner(userAccount).then(displayZombies);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
 
 
 
