@@ -24,12 +24,32 @@
       }
 
 
-      // This function will communicate with Web3 provider node and tell it to return the zombie with index id from Zombie90 public zombies
+      // This function will communicate with Web3 provider node and tell it to return the zombie with index id from Zombie[] public zombies
         // It is an asynchronous operation, so will return a promise and continue to .then statement when fulfilled or rejected
         // The Web3.js call method is used for view and pure functions, only runs on the local node, and won't create a tx on the blockchain
       function getZombieDetails(id) {
+          // return <contractName>.methods.<arrayName(id).call()
         return cryptoZombies.methods.zombies(id).call()
       }
+
+      // Calling our contract on the back-end to bring data to front-end
+      // Similar to mapping in ZombieFactory.sol
+        // Takes id as a parameter
+          // Returns a Web3.js call to zombieToOwner on our contract
+      function zombieToOwner(id) {
+        return cryptoZombies.methods.zombieToOwner(id).call()
+      }
+
+      // Calling our contract on the back-end to bring data to front-end
+      // Same function as the one in ZombieHelper.sol
+        // Takes owner as a parameter
+          // Returns Web3.js call to getZombiesByOwner on our contract
+      function getZombiesByOwner(owner) {
+        return cryptoZombies.methods.getZombiesByOwner(owner).call()
+      }
+
+
+
 
 
 
