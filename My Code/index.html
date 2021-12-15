@@ -23,6 +23,16 @@
         cryptoZombies = new web3js.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
       }
 
+
+      // This function will communicate with Web3 provider node and tell it to return the zombie with index id from Zombie90 public zombies
+        // It is an asynchronous operation, so will return a promise and continue to .then statement when fulfilled or rejected
+        // The Web3.js call method is used for view and pure functions, only runs on the local node, and won't create a tx on the blockchain
+      function getZombieDetails(id) {
+        return cryptoZombies.methods.zombies(id).call()
+      }
+
+
+
       window.addEventListener('load', function() {
         // Checking if Web3 has been injected by the browser (Mist/MetaMask)
           // Checking to see if the global JS onject web3 exists
