@@ -47,6 +47,18 @@
             getZombiesByOwner(userAccount).then(displayZombies);
           }
         }, 100);
+        // We used the indexed keyword in our Transfer event in erc721.sol
+          // This allows us to filter - only listening and firing this code per the noted specifications
+          // Here we are filtering and only firing this code when _to (the address receiving the zombie) = userAccount (the current user)
+        cryptoZombies.events.Transfer({ filter: { _to: userAccount } })
+          // When we receive the data, execute the Transfer event in Solidity❓
+          .on("data", function(event) {
+            // We receive an event.returnValues object
+            let data = event.returnValues;
+            // After the user has received a new zombie, we call getZombiesByOwner(web3) which calls getZombiesByOwner(Solidity) which uses the users MetMask account to return an array of all the users zombies
+              // .then we send the array ids of all of the users zombies to display them
+            getZombiesByOwner(userAccount).then(displayZombies);
+          }).on("error", console.error);
 
       }
 
